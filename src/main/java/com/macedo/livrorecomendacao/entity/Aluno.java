@@ -3,6 +3,7 @@ package com.macedo.livrorecomendacao.entity;
 
 import com.macedo.livrorecomendacao.enums.Turno;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,9 +25,13 @@ public class Aluno {
     private String nome;
     @NotBlank(message = "Matricula não pode ser vazia.")
     private String matricula;
+    @NotBlank(message = "Email não pode ser vazio")
+    @Email
+    private String email;
+    @NotBlank(message = "Telefone não pode ser vazio")
+    private String telefone;
     @NotBlank(message = "Turma não pode ser vazia.")
     private String turma;
-
     @Enumerated(EnumType.STRING)
     private Turno turno;
     @OneToMany
