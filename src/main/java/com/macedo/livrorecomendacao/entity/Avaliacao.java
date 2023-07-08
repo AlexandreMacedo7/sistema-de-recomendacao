@@ -15,7 +15,6 @@ public class Avaliacao {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "aluno_id")
     @NotNull
