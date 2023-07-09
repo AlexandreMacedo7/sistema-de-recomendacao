@@ -6,7 +6,7 @@ public record CadastroAlunoDTO(
         String nome,
         String matricula,
         String email,
-        String telefne,
+        String telefone,
         String turma,
         Turno turno
 ) {
