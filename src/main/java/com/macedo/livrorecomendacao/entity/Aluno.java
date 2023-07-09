@@ -36,5 +36,14 @@ public class Aluno {
     private Turno turno;
     @OneToMany
     private List<Avaliacao> avaliacaoLista = new ArrayList<>();
+
+    public Aluno(String nome, String matricula, String email, String telefne, String turma, Turno turno) {
+        this.nome = nome;
+        this.matricula = matricula;
+        this.email = email;
+        this.telefone = telefne;
+        this.turma = turma;
+        this.turno = turno;
+    }
 }
 
