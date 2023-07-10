@@ -1,6 +1,6 @@
 package com.macedo.livrorecomendacao.controller;
 
-import com.macedo.livrorecomendacao.dtos.CadastroAlunoDTO;
+import com.macedo.livrorecomendacao.dtos.alunodto.CadastroAlunoDTO;
 import com.macedo.livrorecomendacao.service.AlunoService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

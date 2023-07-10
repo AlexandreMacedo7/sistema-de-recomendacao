@@ -1,4 +1,4 @@
-package com.macedo.livrorecomendacao.dtos;
+package com.macedo.livrorecomendacao.dtos.alunodto;
 
 import com.macedo.livrorecomendacao.enums.Turno;
 

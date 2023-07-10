@@ -1,6 +1,6 @@
 package com.macedo.livrorecomendacao.service;
 
-import com.macedo.livrorecomendacao.dtos.CadastroAlunoDTO;
+import com.macedo.livrorecomendacao.dtos.alunodto.CadastroAlunoDTO;
 import com.macedo.livrorecomendacao.entity.Aluno;
 import com.macedo.livrorecomendacao.repository.AlunoRepository;
 import jakarta.transaction.Transactional;
