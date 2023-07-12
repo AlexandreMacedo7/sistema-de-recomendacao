@@ -30,8 +30,9 @@ public class Livro {
     @OneToMany
     private List<Avaliacao> avaliacaoLista = new ArrayList<>();
 
-    public Livro(String titulo, String autor, String isbn, int ano, Editora editora) {
+    public Livro(String titulo, Genero genero, String autor, String isbn, int ano, Editora editora) {
         this.titulo = titulo;
+        this.genero = genero;
         this.autor = autor;
         this.isbn = isbn;
         this.ano = ano;

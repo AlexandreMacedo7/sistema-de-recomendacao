@@ -22,11 +22,13 @@ public class LivroService {
 
     public void CadastrarLivro(@Valid CadastrarLivroDTO cadastrarLivroDTO){
 
-        CadastrarEditoraDTO cadastrarEditoraDTO = cadastrarLivroDTO.editora();
-        Editora editora = editoraService.criarEditora(cadastrarEditoraDTO);
+        CadastrarEditoraDTO editoraDTO = cadastrarLivroDTO.editora();
+
+        Editora editora = editoraService.criarEditora(editoraDTO);
 
         Livro livro = new Livro(
                 cadastrarLivroDTO.titulo(),
+                cadastrarLivroDTO.genero(),
                 cadastrarLivroDTO.autor(),
                 cadastrarLivroDTO.isbn(),
                 cadastrarLivroDTO.ano(),
