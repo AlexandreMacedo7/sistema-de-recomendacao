@@ -5,6 +5,7 @@ import com.macedo.livrorecomendacao.dtos.livrodto.CadastrarLivroDTO;
 import com.macedo.livrorecomendacao.entity.Editora;
 import com.macedo.livrorecomendacao.entity.Livro;
 import com.macedo.livrorecomendacao.repository.LivroRespository;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ public class LivroService {
         this.editoraService = editoraService;
     }
 
+    @Transactional
     public void CadastrarLivro(@Valid CadastrarLivroDTO cadastrarLivroDTO){
 
         CadastrarEditoraDTO editoraDTO = cadastrarLivroDTO.editora();

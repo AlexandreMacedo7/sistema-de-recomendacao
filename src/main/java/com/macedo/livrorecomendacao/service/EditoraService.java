@@ -3,6 +3,7 @@ package com.macedo.livrorecomendacao.service;
 import com.macedo.livrorecomendacao.dtos.editoradto.CadastrarEditoraDTO;
 import com.macedo.livrorecomendacao.entity.Editora;
 import com.macedo.livrorecomendacao.repository.EditoraRepository;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ public class EditoraService {
         this.editoraRepository = editoraRepository;
     }
 
+    @Transactional
     public Editora criarEditora(@Valid CadastrarEditoraDTO editoraDTO){
 
         Editora editora = editoraRepository.findByNome(editoraDTO.nome());
