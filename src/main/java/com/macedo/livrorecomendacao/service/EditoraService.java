@@ -17,7 +17,7 @@ public class EditoraService {
 
     public Editora criarEditora(@Valid CadastrarEditoraDTO editoraDTO){
 
-        Editora editora = editoraRepository.findByNome(editoraDTO);
+        Editora editora = editoraRepository.findByNome(editoraDTO.nome());
         if (editora == null){
             editora = new Editora(editoraDTO);
             editoraRepository.save(editora);
