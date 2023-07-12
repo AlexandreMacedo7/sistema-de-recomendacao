@@ -1,6 +1,7 @@
 package com.macedo.livrorecomendacao.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,4 +24,10 @@ public class Avaliacao {
     @JoinColumn(name = "livro_id")
     @NotNull
     private Livro livro;
+    @NotBlank
+    private String matricula;
+    @NotBlank
+    private String isbn;
+    @NotNull
+    private double nota;
 }
