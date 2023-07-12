@@ -15,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"nome", "matricula"})})
 @Entity
 public class Aluno {
 

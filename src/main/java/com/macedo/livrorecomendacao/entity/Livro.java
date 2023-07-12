@@ -13,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"titulo","autor","isbn"})})
 @Entity
 public class Livro {
 
