@@ -24,10 +24,12 @@ public class Avaliacao {
     @JoinColumn(name = "livro_id")
     @NotNull
     private Livro livro;
-    @NotBlank
-    private String matricula;
-    @NotBlank
-    private String isbn;
     @NotNull
     private double nota;
+
+    public Avaliacao(Aluno aluno, Livro livro, double nota) {
+        this.aluno = aluno;
+        this.livro = livro;
+        this.nota = nota;
+    }
 }
