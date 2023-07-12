@@ -12,5 +12,6 @@ public enum Genero {
     GIBIS,
     POESIA,
     CONTOS,
-    TERROR
+    TERROR,
+    FANTASIA
 }
