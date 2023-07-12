@@ -1,5 +1,6 @@
 package com.macedo.livrorecomendacao.entity;
 
+import com.macedo.livrorecomendacao.dtos.editoradto.CadastrarEditoraDTO;
 import com.macedo.livrorecomendacao.enums.Genero;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -28,4 +29,13 @@ public class Livro {
     private Editora editora;
     @OneToMany
     private List<Avaliacao> avaliacaoLista = new ArrayList<>();
+
+    public Livro(String titulo, String autor, String isbn, int ano, Editora editora) {
+        this.titulo = titulo;
+        this.autor = autor;
+        this.isbn = isbn;
+        this.ano = ano;
+        this.editora = editora;
+
+    }
 }
