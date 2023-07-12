@@ -40,7 +40,10 @@ public class AvaliacaoService {
 
         avaliacaoRepository.save(avaliacao);
 
+        livro.getAvaliacaoLista().add(avaliacao);
         aluno.getAvaliacaoLista().add(avaliacao);
+
+        livroRespository.save(livro);
         alunoRepository.save(aluno);
 
     }
