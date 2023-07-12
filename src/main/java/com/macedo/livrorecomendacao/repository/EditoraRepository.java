@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface EditoraRepository extends JpaRepository<Editora, Long> {
     @Query("SELECT e FROM Editora e WHERE e.nome = ?1")
-    Editora findByNome(CadastrarEditoraDTO editoraDTO);
+    Editora findByNome(String nome);
 }
