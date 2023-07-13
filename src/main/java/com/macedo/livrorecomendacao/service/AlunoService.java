@@ -2,15 +2,13 @@ package com.macedo.livrorecomendacao.service;
 
 import com.macedo.livrorecomendacao.dtos.alunodto.CadastroAlunoDTO;
 import com.macedo.livrorecomendacao.dtos.alunodto.DadosAlunoDTO;
-import com.macedo.livrorecomendacao.dtos.avaliacao.AvaliacaoDadosDTO;
+import com.macedo.livrorecomendacao.dtos.avaliacaodto.AvaliacaoDadosDTO;
 import com.macedo.livrorecomendacao.entity.Aluno;
-import com.macedo.livrorecomendacao.entity.Avaliacao;
 import com.macedo.livrorecomendacao.exception.AlunoNaoEncontradoException;
 import com.macedo.livrorecomendacao.repository.AlunoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,14 +43,11 @@ public class AlunoService {
             if (aluno == null) {
                 throw new AlunoNaoEncontradoException("Matricula: " + matricula + "Não encontrada!");
             }
-
-            List<AvaliacaoDadosDTO> avaliacoesDTOS = new ArrayList<>();
-
             List<AvaliacaoDadosDTO> avaliacaoDadosDTOS = aluno.getAvaliacaoLista().stream().map(avaliacao -> new AvaliacaoDadosDTO(
-                    avaliacao.getLivro().getIsbn(),avaliacao.getNota())).collect(Collectors.toList());
+                    avaliacao.getLivro().getTitulo(), avaliacao.getLivro().getIsbn(), avaliacao.getNota())).collect(Collectors.toList());
             return new DadosAlunoDTO(aluno.getNome(), aluno.getEmail(),
-                    aluno.getTurma(), aluno.getTurno(), avaliacoesDTOS);
-        } catch (Exception ex){
+                    aluno.getTurma(), aluno.getTurno(), avaliacaoDadosDTOS);
+        } catch (Exception ex) {
             throw new RuntimeException("Erro ao buscar dados do aluno " + ex.getMessage());
         }
     }
