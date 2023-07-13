@@ -1,6 +1,6 @@
 package com.macedo.livrorecomendacao.service;
 
-import com.macedo.livrorecomendacao.dtos.avaliacao.CadastrarAvaliacaoDTO;
+import com.macedo.livrorecomendacao.dtos.avaliacaodto.CadastrarAvaliacaoDTO;
 import com.macedo.livrorecomendacao.entity.Aluno;
 import com.macedo.livrorecomendacao.entity.Avaliacao;
 import com.macedo.livrorecomendacao.entity.Livro;

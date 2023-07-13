@@ -1,7 +1,6 @@
 package com.macedo.livrorecomendacao.dtos.alunodto;
 
-import com.macedo.livrorecomendacao.dtos.avaliacao.AvaliacaoDadosDTO;
-import com.macedo.livrorecomendacao.entity.Avaliacao;
+import com.macedo.livrorecomendacao.dtos.avaliacaodto.AvaliacaoDadosDTO;
 import com.macedo.livrorecomendacao.enums.Turno;
 
 import java.util.List;

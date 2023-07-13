@@ -1,4 +1,4 @@
-package com.macedo.livrorecomendacao.dtos.avaliacao;
+package com.macedo.livrorecomendacao.dtos.avaliacaodto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
