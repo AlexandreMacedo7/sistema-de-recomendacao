@@ -1,6 +1,6 @@
 package com.macedo.livrorecomendacao.controller;
 
-import com.macedo.livrorecomendacao.dtos.avaliacao.CadastrarAvaliacaoDTO;
+import com.macedo.livrorecomendacao.dtos.avaliacaodto.CadastrarAvaliacaoDTO;
 import com.macedo.livrorecomendacao.service.AvaliacaoService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
