@@ -1,6 +1,8 @@
 package com.macedo.livrorecomendacao.controller;
 
 import com.macedo.livrorecomendacao.dtos.alunodto.CadastroAlunoDTO;
+import com.macedo.livrorecomendacao.dtos.alunodto.DadosAlunoDTO;
+import com.macedo.livrorecomendacao.dtos.alunodto.PesquisaMatriculaDTO;
 import com.macedo.livrorecomendacao.service.AlunoService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,5 +21,11 @@ public class AlunoController {
     @PostMapping
     public void cadastrarAluno(@RequestBody CadastroAlunoDTO dados){
         alunoService.cadastraAluno(dados);
+    }
+
+    @PostMapping("/pesquisa")
+    public DadosAlunoDTO dadosAlunoDTO(@RequestBody PesquisaMatriculaDTO matriculaAluno){
+        DadosAlunoDTO alunoDTO;
+        return alunoDTO = alunoService.listarDadosAluno(matriculaAluno.matricula());
     }
 }
