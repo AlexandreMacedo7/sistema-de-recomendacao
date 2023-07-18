@@ -1,5 +1,6 @@
 package com.macedo.livrorecomendacao.service;
 
+import com.macedo.livrorecomendacao.dtos.alunodto.AlunoDTO;
 import com.macedo.livrorecomendacao.dtos.alunodto.CadastroAlunoDTO;
 import com.macedo.livrorecomendacao.dtos.alunodto.DadosAlunoDTO;
 import com.macedo.livrorecomendacao.dtos.avaliacaodto.AvaliacaoDadosDTO;
@@ -50,5 +51,11 @@ public class AlunoService {
         } catch (Exception ex) {
             throw new RuntimeException("Erro ao buscar dados do aluno " + ex.getMessage());
         }
+    }
+    public List<AlunoDTO> listarAlunos(){
+        List<Aluno> alunos = alunoRepository.findAll();
+        return alunos.stream().map(aluno ->
+                new AlunoDTO(aluno.getMatricula(), aluno.getNome(), aluno.getTurma(), aluno.getTurno(),
+                        aluno.getEmail(), aluno.getTelefone())).collect(Collectors.toList());
     }
 }
