@@ -5,23 +5,34 @@ import com.macedo.livrorecomendacao.dtos.alunodto.CadastroAlunoDTO;
 import com.macedo.livrorecomendacao.dtos.alunodto.DadosAlunoDTO;
 import com.macedo.livrorecomendacao.dtos.avaliacaodto.AvaliacaoDadosDTO;
 import com.macedo.livrorecomendacao.entity.Aluno;
+import com.macedo.livrorecomendacao.entity.Avaliacao;
 import com.macedo.livrorecomendacao.exception.AlunoNaoEncontradoException;
 import com.macedo.livrorecomendacao.repository.AlunoRepository;
+import com.macedo.livrorecomendacao.repository.AvaliacaoRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionSystemException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class AlunoService {
 
     private final AlunoRepository alunoRepository;
+    private final AvaliacaoRepository avaliacaoRepository;
+    private final AvaliacaoService avaliacaoService;
 
-    public AlunoService(AlunoRepository alunoRepository) {
+    public AlunoService(AlunoRepository alunoRepository,
+                        AvaliacaoRepository avaliacaoRepository,
+                        AvaliacaoService avaliacaoService) {
         this.alunoRepository = alunoRepository;
+        this.avaliacaoRepository = avaliacaoRepository;
+        this.avaliacaoService = avaliacaoService;
     }
 
     @Transactional
@@ -54,9 +65,32 @@ public class AlunoService {
             throw new RuntimeException("Erro ao buscar dados do aluno " + ex.getMessage());
         }
     }
-    public Page<AlunoDTO> listarAlunos(Pageable pageable){
+
+    public Page<AlunoDTO> listarAlunos(Pageable pageable) {
         Page<Aluno> alunos = alunoRepository.findAll(pageable);
         return alunos.map(aluno -> new AlunoDTO(aluno.getMatricula(), aluno.getNome(), aluno.getTurma(),
                 aluno.getTurno(), aluno.getEmail(), aluno.getTelefone()));
+    }
+    @Transactional
+    public void deletarAluno(String matricula) {
+
+        try {
+            Optional<Aluno> optionalAluno = Optional.ofNullable(alunoRepository.findByMatricula(matricula));
+            if (optionalAluno.isEmpty()) {
+                throw new AlunoNaoEncontradoException("Matricula não encontrada");
+            }
+            Aluno aluno = optionalAluno.get();
+            List<Avaliacao> avaliacaos = aluno.getAvaliacaoLista();
+            for (Avaliacao avaliacao : avaliacaos) {
+				avaliacaoService.deletarAvaliacao(avaliacao);
+            }
+            alunoRepository.delete(aluno);
+        } catch (NullPointerException ex) {
+            throw new IllegalArgumentException("A matricula não pode ser nula - ", ex);
+        } catch (DataAccessException ex) {
+            throw new RuntimeException("Erro ao excluir aluno no Banco de dados - ", ex);
+        } catch (TransactionSystemException ex) {
+            throw new RuntimeException("Erro ao executar transação - ", ex);
+        }
     }
 }
