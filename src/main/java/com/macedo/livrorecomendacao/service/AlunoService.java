@@ -80,10 +80,7 @@ public class AlunoService {
                 throw new AlunoNaoEncontradoException("Matricula não encontrada");
             }
             Aluno aluno = optionalAluno.get();
-            List<Avaliacao> avaliacaos = aluno.getAvaliacaoLista();
-            for (Avaliacao avaliacao : avaliacaos) {
-				avaliacaoService.deletarAvaliacao(avaliacao);
-            }
+            avaliacaoService.deletarAvaliacoesDoAluno(aluno);
             alunoRepository.delete(aluno);
         } catch (NullPointerException ex) {
             throw new IllegalArgumentException("A matricula não pode ser nula - ", ex);

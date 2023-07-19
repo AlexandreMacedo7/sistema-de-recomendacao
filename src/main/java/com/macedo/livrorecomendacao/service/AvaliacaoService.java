@@ -12,6 +12,8 @@ import com.macedo.livrorecomendacao.repository.LivroRespository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AvaliacaoService {
 
@@ -51,5 +53,12 @@ public class AvaliacaoService {
         Livro livro = livroRespository.findByIsbn(avaliacao.getLivro().getIsbn());
         livro.getAvaliacaoLista().remove(avaliacao);
         livroRespository.save(livro);
+    }
+    @Transactional
+    public void deletarAvaliacoesDoAluno(Aluno aluno){
+        List<Avaliacao> avaliacoes = aluno.getAvaliacaoLista();
+        for (Avaliacao avaliacao : avaliacoes){
+            deletarAvaliacao(avaliacao);
+        }
     }
 }
