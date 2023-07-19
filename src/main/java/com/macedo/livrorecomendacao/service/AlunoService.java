@@ -8,6 +8,8 @@ import com.macedo.livrorecomendacao.entity.Aluno;
 import com.macedo.livrorecomendacao.exception.AlunoNaoEncontradoException;
 import com.macedo.livrorecomendacao.repository.AlunoRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -52,10 +54,9 @@ public class AlunoService {
             throw new RuntimeException("Erro ao buscar dados do aluno " + ex.getMessage());
         }
     }
-    public List<AlunoDTO> listarAlunos(){
-        List<Aluno> alunos = alunoRepository.findAll();
-        return alunos.stream().map(aluno ->
-                new AlunoDTO(aluno.getMatricula(), aluno.getNome(), aluno.getTurma(), aluno.getTurno(),
-                        aluno.getEmail(), aluno.getTelefone())).collect(Collectors.toList());
+    public Page<AlunoDTO> listarAlunos(Pageable pageable){
+        Page<Aluno> alunos = alunoRepository.findAll(pageable);
+        return alunos.map(aluno -> new AlunoDTO(aluno.getMatricula(), aluno.getNome(), aluno.getTurma(),
+                aluno.getTurno(), aluno.getEmail(), aluno.getTelefone()));
     }
 }
