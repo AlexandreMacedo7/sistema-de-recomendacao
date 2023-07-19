@@ -1,5 +1,6 @@
 package com.macedo.livrorecomendacao.service;
 
+import com.macedo.livrorecomendacao.dtos.avaliacaodto.AvaliacaoDadosDTO;
 import com.macedo.livrorecomendacao.dtos.avaliacaodto.CadastrarAvaliacaoDTO;
 import com.macedo.livrorecomendacao.entity.Aluno;
 import com.macedo.livrorecomendacao.entity.Avaliacao;
@@ -10,6 +11,8 @@ import com.macedo.livrorecomendacao.repository.AlunoRepository;
 import com.macedo.livrorecomendacao.repository.AvaliacaoRepository;
 import com.macedo.livrorecomendacao.repository.LivroRespository;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -47,6 +50,12 @@ public class AvaliacaoService {
 
         livroRespository.save(livro);
         alunoRepository.save(aluno);
+    }
+
+    public Page<AvaliacaoDadosDTO> listarAvaliacoes(Pageable pageable){
+        Page<Avaliacao> avaliacoes = avaliacaoRepository.findAll(pageable);
+        return avaliacoes.map(avaliacao -> new AvaliacaoDadosDTO(avaliacao.getAluno().getNome(),
+                avaliacao.getLivro().getTitulo(), avaliacao.getNota()));
     }
     @Transactional
     public void deletarAvaliacao(Avaliacao avaliacao){
