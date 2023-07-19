@@ -1,7 +1,6 @@
 package com.macedo.livrorecomendacao.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,11 +16,11 @@ public class Avaliacao {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "aluno_id")
+    @JoinColumn(name = "matricula_aluno", referencedColumnName = "matricula")
     @NotNull
     private Aluno aluno;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "livro_id")
+    @JoinColumn(name = "isbn_livro", referencedColumnName = "isbn")
     @NotNull
     private Livro livro;
     @NotNull
