@@ -45,6 +45,11 @@ public class AvaliacaoService {
 
         livroRespository.save(livro);
         alunoRepository.save(aluno);
-
+    }
+    @Transactional
+    public void deletarAvaliacao(Avaliacao avaliacao){
+        Livro livro = livroRespository.findByIsbn(avaliacao.getLivro().getIsbn());
+        livro.getAvaliacaoLista().remove(avaliacao);
+        livroRespository.save(livro);
     }
 }
