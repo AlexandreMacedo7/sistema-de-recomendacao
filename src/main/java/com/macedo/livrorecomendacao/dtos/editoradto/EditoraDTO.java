@@ -1,4 +1,6 @@
 package com.macedo.livrorecomendacao.dtos.editoradto;
 
-public record EditoraDTO(String nome) {
+import jakarta.validation.constraints.NotBlank;
+
+public record EditoraDTO(@NotBlank String nome) {
 }
