@@ -5,9 +5,11 @@ import com.macedo.livrorecomendacao.dtos.alunodto.CadastroAlunoDTO;
 import com.macedo.livrorecomendacao.dtos.alunodto.DadosAlunoDTO;
 import com.macedo.livrorecomendacao.dtos.alunodto.PesquisaMatriculaDTO;
 import com.macedo.livrorecomendacao.service.AlunoService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/aluno")
@@ -29,7 +31,8 @@ public class AlunoController {
         return alunoDTO = alunoService.listarDadosAluno(matriculaAluno.matricula());
     }
     @GetMapping
-    public List<AlunoDTO> listarAlunos(){
-        return alunoService.listarAlunos();
+    public ResponseEntity<Page<AlunoDTO>> listarAlunos(@PageableDefault(size = 10, sort ={"nome"}) Pageable pageable){
+		var page = alunoService.listarAlunos(pageable);
+        return ResponseEntity.ok(page);
     }
 }
