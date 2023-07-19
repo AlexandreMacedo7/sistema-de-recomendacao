@@ -1,5 +1,6 @@
 package com.macedo.livrorecomendacao.dtos.alunodto;
 
+import com.macedo.livrorecomendacao.entity.Aluno;
 import com.macedo.livrorecomendacao.enums.Turno;
 
 public record AlunoDTO(
@@ -10,4 +11,7 @@ public record AlunoDTO(
         String email,
         String telefone
 ) {
+    public AlunoDTO(Aluno aluno){
+        this(aluno.getMatricula(), aluno.getNome(), aluno.getTurma(), aluno.getTurno(),aluno.getEmail(), aluno.getTelefone());
+    }
 }
