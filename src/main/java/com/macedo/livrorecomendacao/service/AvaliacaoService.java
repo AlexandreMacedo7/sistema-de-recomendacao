@@ -1,6 +1,6 @@
 package com.macedo.livrorecomendacao.service;
 
-import com.macedo.livrorecomendacao.dtos.avaliacaodto.AvaliacaoDadosDTO;
+import com.macedo.livrorecomendacao.dtos.avaliacaodto.AvaliacaoDadosGeralDTO;
 import com.macedo.livrorecomendacao.dtos.avaliacaodto.CadastrarAvaliacaoDTO;
 import com.macedo.livrorecomendacao.entity.Aluno;
 import com.macedo.livrorecomendacao.entity.Avaliacao;
@@ -52,10 +52,11 @@ public class AvaliacaoService {
         alunoRepository.save(aluno);
     }
 
-    public Page<AvaliacaoDadosDTO> listarAvaliacoes(Pageable pageable){
+    public Page<AvaliacaoDadosGeralDTO> listarAvaliacoes(Pageable pageable){
         Page<Avaliacao> avaliacoes = avaliacaoRepository.findAll(pageable);
-        return avaliacoes.map(avaliacao -> new AvaliacaoDadosDTO(avaliacao.getAluno().getNome(),
-                avaliacao.getLivro().getTitulo(), avaliacao.getNota()));
+        return avaliacoes.map(avaliacao -> new AvaliacaoDadosGeralDTO(
+                avaliacao.getAluno().getNome(),avaliacao.getAluno().getMatricula(),
+                avaliacao.getLivro().getTitulo(), avaliacao.getLivro().getIsbn(), avaliacao.getNota()));
     }
     @Transactional
     public void deletarAvaliacao(Avaliacao avaliacao){
