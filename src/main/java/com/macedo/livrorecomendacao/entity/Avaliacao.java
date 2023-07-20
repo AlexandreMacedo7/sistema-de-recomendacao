@@ -1,6 +1,8 @@
 package com.macedo.livrorecomendacao.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,6 +25,8 @@ public class Avaliacao {
     @JoinColumn(name = "isbn_livro", referencedColumnName = "isbn")
     @NotNull
     private Livro livro;
+    @Min(1)
+    @Max(5)
     @NotNull
     private double nota;
 
