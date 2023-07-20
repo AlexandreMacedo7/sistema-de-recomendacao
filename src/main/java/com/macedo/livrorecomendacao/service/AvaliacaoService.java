@@ -7,6 +7,7 @@ import com.macedo.livrorecomendacao.entity.Avaliacao;
 import com.macedo.livrorecomendacao.entity.Livro;
 import com.macedo.livrorecomendacao.exception.AlunoNaoEncontradoException;
 import com.macedo.livrorecomendacao.exception.LivroNaoEncontradoException;
+import com.macedo.livrorecomendacao.exception.NotaInvalidaException;
 import com.macedo.livrorecomendacao.repository.AlunoRepository;
 import com.macedo.livrorecomendacao.repository.AvaliacaoRepository;
 import com.macedo.livrorecomendacao.repository.LivroRespository;
@@ -41,6 +42,7 @@ public class AvaliacaoService {
         if (livro == null){
             throw new LivroNaoEncontradoException("Livro não encontrado");
         }
+        validacaoDeNota(avaliacaoDTO.nota());
         Avaliacao avaliacao = new Avaliacao(aluno, livro, avaliacaoDTO.nota());
 
         avaliacaoRepository.save(avaliacao);
@@ -69,6 +71,11 @@ public class AvaliacaoService {
         List<Avaliacao> avaliacoes = aluno.getAvaliacaoLista();
         for (Avaliacao avaliacao : avaliacoes){
             deletarAvaliacao(avaliacao);
+        }
+    }
+    private void validacaoDeNota(double nota){
+        if(nota < 1 || nota > 5){
+            throw new NotaInvalidaException("A nota deve estar entre 1 e 5");
         }
     }
 }
