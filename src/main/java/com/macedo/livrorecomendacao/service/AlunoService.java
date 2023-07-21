@@ -5,7 +5,6 @@ import com.macedo.livrorecomendacao.dtos.alunodto.CadastroAlunoDTO;
 import com.macedo.livrorecomendacao.dtos.alunodto.DadosAlunoDTO;
 import com.macedo.livrorecomendacao.dtos.avaliacaodto.AvaliacaoDadosDTO;
 import com.macedo.livrorecomendacao.entity.Aluno;
-import com.macedo.livrorecomendacao.entity.Avaliacao;
 import com.macedo.livrorecomendacao.exception.AlunoNaoEncontradoException;
 import com.macedo.livrorecomendacao.repository.AlunoRepository;
 import com.macedo.livrorecomendacao.repository.AvaliacaoRepository;
@@ -71,6 +70,7 @@ public class AlunoService {
         return alunos.map(aluno -> new AlunoDTO(aluno.getMatricula(), aluno.getNome(), aluno.getTurma(),
                 aluno.getTurno(), aluno.getEmail(), aluno.getTelefone()));
     }
+
     @Transactional
     public void deletarAluno(String matricula) {
 
@@ -80,7 +80,7 @@ public class AlunoService {
                 throw new AlunoNaoEncontradoException("Matricula não encontrada");
             }
             Aluno aluno = optionalAluno.get();
-            avaliacaoService.deletarAvaliacoesDoAluno(aluno);
+            avaliacaoService.deletarAvaliacoesDoLivro(aluno);
             alunoRepository.delete(aluno);
         } catch (NullPointerException ex) {
             throw new IllegalArgumentException("A matricula não pode ser nula - ", ex);

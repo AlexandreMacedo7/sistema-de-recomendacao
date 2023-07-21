@@ -1,6 +1,5 @@
 package com.macedo.livrorecomendacao.entity;
 
-
 import com.macedo.livrorecomendacao.enums.Turno;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
