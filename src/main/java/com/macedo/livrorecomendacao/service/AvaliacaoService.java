@@ -1,6 +1,7 @@
 package com.macedo.livrorecomendacao.service;
 
 import com.macedo.livrorecomendacao.dtos.avaliacaodto.AvaliacaoDadosGeralDTO;
+import com.macedo.livrorecomendacao.dtos.avaliacaodto.AvaliacaoDelecaoDTO;
 import com.macedo.livrorecomendacao.dtos.avaliacaodto.CadastrarAvaliacaoDTO;
 import com.macedo.livrorecomendacao.entity.Aluno;
 import com.macedo.livrorecomendacao.entity.Avaliacao;
@@ -32,14 +33,14 @@ public class AvaliacaoService {
     }
 
     @Transactional
-    public void cadastrarAvaliacao(CadastrarAvaliacaoDTO avaliacaoDTO){
+    public void cadastrarAvaliacao(CadastrarAvaliacaoDTO avaliacaoDTO) {
 
         Aluno aluno = alunoRepository.findByMatricula(avaliacaoDTO.matricula());
-        if (aluno == null){
+        if (aluno == null) {
             throw new AlunoNaoEncontradoException("Aluno não encontrado");
         }
         Livro livro = livroRespository.findByIsbn(avaliacaoDTO.isbn());
-        if (livro == null){
+        if (livro == null) {
             throw new LivroNaoEncontradoException("Livro não encontrado");
         }
         validacaoDeNota(avaliacaoDTO.nota());
@@ -54,28 +55,51 @@ public class AvaliacaoService {
         alunoRepository.save(aluno);
     }
 
-    public Page<AvaliacaoDadosGeralDTO> listarAvaliacoes(Pageable pageable){
+    public Page<AvaliacaoDadosGeralDTO> listarAvaliacoes(Pageable pageable) {
         Page<Avaliacao> avaliacoes = avaliacaoRepository.findAll(pageable);
         return avaliacoes.map(avaliacao -> new AvaliacaoDadosGeralDTO(
-                avaliacao.getAluno().getNome(),avaliacao.getAluno().getMatricula(),
+                avaliacao.getAluno().getNome(), avaliacao.getAluno().getMatricula(),
                 avaliacao.getLivro().getTitulo(), avaliacao.getLivro().getIsbn(), avaliacao.getNota()));
     }
+
     @Transactional
-    public void deletarAvaliacao(Avaliacao avaliacao){
-        Livro livro = livroRespository.findByIsbn(avaliacao.getLivro().getIsbn());
-        livro.getAvaliacaoLista().remove(avaliacao);
-        livroRespository.save(livro);
-    }
-    @Transactional
-    public void deletarAvaliacoesDoAluno(Aluno aluno){
+    public void deletarAvaliacoesDoLivro(Aluno aluno) {
         List<Avaliacao> avaliacoes = aluno.getAvaliacaoLista();
-        for (Avaliacao avaliacao : avaliacoes){
-            deletarAvaliacao(avaliacao);
+        for (Avaliacao avaliacao : avaliacoes) {
+            Livro livro = livroRespository.findByIsbn(avaliacao.getLivro().getIsbn());
+            livro.getAvaliacaoLista().remove(avaliacao);
+            livroRespository.save(livro);
         }
     }
-    private void validacaoDeNota(double nota){
-        if(nota < 1 || nota > 5){
-            throw new NotaInvalidaException("A nota deve estar entre 1 e 5");
+
+    @Transactional
+    public void deletarAvaliacaoPorMatriculaEIsbn(AvaliacaoDelecaoDTO delecaoDTO) {
+        try {
+
+            Aluno aluno = alunoRepository.findByMatricula(delecaoDTO.matricula());
+            Livro livro = livroRespository.findByIsbn(delecaoDTO.isbn());
+
+            if (aluno != null && livro != null) {
+
+                List<Avaliacao> avaliacaos = aluno.getAvaliacaoLista();
+                for (Avaliacao avaliacao : avaliacaos) {
+                    if (avaliacao.getLivro().getIsbn().equals(livro.getIsbn())) {
+                        deletarAvaliacoesDoLivro(aluno);
+                    }
+                }
+                avaliacaos.removeIf(avaliacao -> avaliacao.getLivro().getIsbn().equals(livro.getIsbn()));
+                {
+                    alunoRepository.save(aluno);
+                    avaliacaoRepository.deleteByMatriculaEIsbn(delecaoDTO.matricula(), delecaoDTO.isbn());
+                }
+            }
+        } catch (Exception ex) {
+            throw new RuntimeException("Erro na exclusão da avaliação - ", ex);
         }
+    }
+
+    private void validacaoDeNota(double nota) {
+        if (nota < 1 || nota > 5)
+            throw new NotaInvalidaException("A nota deve estar entre 1 e 5");
     }
 }
