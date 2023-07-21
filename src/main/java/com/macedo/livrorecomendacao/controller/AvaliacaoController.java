@@ -1,8 +1,10 @@
 package com.macedo.livrorecomendacao.controller;
 
 import com.macedo.livrorecomendacao.dtos.avaliacaodto.AvaliacaoDadosGeralDTO;
+import com.macedo.livrorecomendacao.dtos.avaliacaodto.AvaliacaoDelecaoDTO;
 import com.macedo.livrorecomendacao.dtos.avaliacaodto.CadastrarAvaliacaoDTO;
 import com.macedo.livrorecomendacao.service.AvaliacaoService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,5 +31,11 @@ public class AvaliacaoController {
     public ResponseEntity<Page<AvaliacaoDadosGeralDTO>> listarAvaliacoes(@PageableDefault(size = 10, sort = "aluno")Pageable pageable){
         Page<AvaliacaoDadosGeralDTO> avaliacaoDadosDTOS = avaliacaoService.listarAvaliacoes(pageable);
         return ResponseEntity.ok(avaliacaoDadosDTOS);
+    }
+    @DeleteMapping
+    @Transactional
+    public ResponseEntity excluirAvaliacao(@RequestBody AvaliacaoDelecaoDTO delecaoDTO){
+        avaliacaoService.deletarAvaliacaoPorMatriculaEIsbn(delecaoDTO);
+        return ResponseEntity.noContent().build();
     }
 }
