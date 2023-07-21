@@ -1,9 +1,9 @@
 package com.macedo.livrorecomendacao.entity;
 
-import com.macedo.livrorecomendacao.dtos.editoradto.CadastrarEditoraDTO;
 import com.macedo.livrorecomendacao.enums.Genero;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,7 +13,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"titulo","autor","isbn"})})
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"titulo", "autor", "isbn"})})
 @Entity
 public class Livro {
 
@@ -24,6 +25,7 @@ public class Livro {
     @Enumerated(EnumType.STRING)
     private Genero genero;
     private String autor;
+    @EqualsAndHashCode.Include
     private String isbn;
     private int ano;
     @ManyToOne
