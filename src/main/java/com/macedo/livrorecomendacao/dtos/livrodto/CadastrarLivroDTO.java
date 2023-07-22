@@ -15,7 +15,7 @@ public record CadastrarLivroDTO(
         String autor,
         @NotBlank
         String isbn,
-        @NotBlank
+        @NotNull
         int ano,
         @NotNull
         CadastrarEditoraDTO editora

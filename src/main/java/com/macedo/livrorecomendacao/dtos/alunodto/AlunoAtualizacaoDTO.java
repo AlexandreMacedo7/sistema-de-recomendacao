@@ -1,13 +1,21 @@
 package com.macedo.livrorecomendacao.dtos.alunodto;
 
 import com.macedo.livrorecomendacao.enums.Turno;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public record AlunoAtualizacaoDTO(
+        @NotBlank
         String matricula,
+        @NotBlank
         String nome,
-        String turma,
-        Turno turno,
+        @NotBlank
         String email,
-        String telefone
+        @NotBlank
+        String telefone,
+        @NotBlank
+        String turma,
+        @NotNull
+        Turno turno
 ) {
 }
