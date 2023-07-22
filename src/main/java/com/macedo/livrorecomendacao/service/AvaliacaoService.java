@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AvaliacaoService {
@@ -73,29 +74,36 @@ public class AvaliacaoService {
     }
 
     @Transactional
-    public void deletarAvaliacaoPorMatriculaEIsbn(AvaliacaoDelecaoDTO delecaoDTO) {
+    public void deletarAvaliacaoPorMatriculaEIsbn(AvaliacaoDelecaoDTO avaliacaoDelecaoDTO) {
         try {
-
-            Aluno aluno = alunoRepository.findByMatricula(delecaoDTO.matricula());
-            Livro livro = livroRespository.findByIsbn(delecaoDTO.isbn());
-
-            if (aluno != null && livro != null) {
-
-                List<Avaliacao> avaliacaos = aluno.getAvaliacaoLista();
-                for (Avaliacao avaliacao : avaliacaos) {
-                    if (avaliacao.getLivro().getIsbn().equals(livro.getIsbn())) {
-                        deletarAvaliacoesDoLivro(aluno);
-                    }
-                }
-                avaliacaos.removeIf(avaliacao -> avaliacao.getLivro().getIsbn().equals(livro.getIsbn()));
-                {
-                    alunoRepository.save(aluno);
-                    avaliacaoRepository.deleteByMatriculaEIsbn(delecaoDTO.matricula(), delecaoDTO.isbn());
-                }
+            Aluno aluno = alunoRepository.findByMatricula(avaliacaoDelecaoDTO.matricula());
+            if (aluno == null) {
+                throw new AlunoNaoEncontradoException("Aluno não encontrado para a matrícula " + avaliacaoDelecaoDTO.matricula());
             }
+
+            Livro livro = livroRespository.findByIsbn(avaliacaoDelecaoDTO.isbn());
+            if (livro == null) {
+                throw new LivroNaoEncontradoException("Livro não encontrado para o ISBN " + avaliacaoDelecaoDTO.isbn());
+            }
+            Optional<Avaliacao> avaliacaoOptional = aluno.getAvaliacaoLista().stream()
+                    .filter(avaliacao -> avaliacao.getLivro().getIsbn()
+                            .equals(livro.getIsbn())).findFirst();
+            if (avaliacaoOptional.isPresent()) {
+                Avaliacao avaliacao = avaliacaoOptional.get();
+                deletarAvaliacao(aluno, avaliacao);
+            }
+        } catch (AlunoNaoEncontradoException | LivroNaoEncontradoException ex) {
+            throw ex;
         } catch (Exception ex) {
             throw new RuntimeException("Erro na exclusão da avaliação - ", ex);
         }
+    }
+	@Transactional
+    private void deletarAvaliacao(Aluno aluno, Avaliacao avaliacao) {
+        deletarAvaliacoesDoLivro(aluno);
+        aluno.getAvaliacaoLista().remove(avaliacao);
+        alunoRepository.save(aluno);
+        avaliacaoRepository.delete(avaliacao);
     }
 
     private void validacaoDeNota(double nota) {
