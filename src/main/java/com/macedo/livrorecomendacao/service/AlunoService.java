@@ -7,6 +7,7 @@ import com.macedo.livrorecomendacao.dtos.alunodto.DadosAlunoIndividualDTO;
 import com.macedo.livrorecomendacao.dtos.avaliacaodto.AvaliacaoDadosDTO;
 import com.macedo.livrorecomendacao.entity.Aluno;
 import com.macedo.livrorecomendacao.exception.AlunoNaoEncontradoException;
+import com.macedo.livrorecomendacao.mapper.AlunoMapper;
 import com.macedo.livrorecomendacao.repository.AlunoRepository;
 import com.macedo.livrorecomendacao.repository.AvaliacaoRepository;
 import jakarta.transaction.Transactional;
@@ -49,9 +50,16 @@ public class AlunoService {
 
         alunoRepository.save(aluno);
     }
+
     @Transactional
-    public void atualizarAluno(@Valid AlunoAtualizacaoDTO alunoAtualizacaoDTO){
-		alunoRepository.findByMatricula(alunoAtualizacaoDTO.matricula());
+    public void atualizarAluno(@Valid AlunoAtualizacaoDTO dadosDTO) {
+        var aluno = alunoRepository.findByMatricula(dadosDTO.matricula());
+        if (aluno != null) {
+            AlunoMapper.INSTANCE.updateAlunoFromDto(dadosDTO, aluno);
+        }else {
+            throw new AlunoNaoEncontradoException("Matricula" + dadosDTO.matricula()
+                    + "não corresponde a nenhum aluno");
+        }
     }
 
     public DadosAlunoIndividualDTO listarDadosAluno(String matricula) {
