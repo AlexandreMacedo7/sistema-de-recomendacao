@@ -1,4 +1,13 @@
 package com.macedo.livrorecomendacao.dtos.alunodto;
 
-public record AlunoAtualizacaoDTO() {
+import com.macedo.livrorecomendacao.enums.Turno;
+
+public record AlunoAtualizacaoDTO(
+        String matricula,
+        String nome,
+        String turma,
+        Turno turno,
+        String email,
+        String telefone
+) {
 }
