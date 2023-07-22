@@ -34,7 +34,7 @@ public class Aluno {
     private String turma;
     @Enumerated(EnumType.STRING)
     private Turno turno;
-    @OneToMany(mappedBy = "aluno", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "aluno", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Avaliacao> avaliacaoLista = new ArrayList<>();
 
     public Aluno(String nome, String matricula, String email, String telefone, String turma, Turno turno) {
