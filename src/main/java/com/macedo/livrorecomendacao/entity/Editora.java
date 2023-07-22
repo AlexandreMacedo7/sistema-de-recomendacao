@@ -2,6 +2,7 @@ package com.macedo.livrorecomendacao.entity;
 
 import com.macedo.livrorecomendacao.dtos.editoradto.CadastrarEditoraDTO;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,7 +26,7 @@ public class Editora {
     @OneToMany(mappedBy = "editora")
     private List<Livro> livros = new ArrayList<>();
 
-    public Editora(CadastrarEditoraDTO editoraDTO) {
+    public Editora(@Valid CadastrarEditoraDTO editoraDTO) {
         this.nome = editoraDTO.nome();
     }
 }

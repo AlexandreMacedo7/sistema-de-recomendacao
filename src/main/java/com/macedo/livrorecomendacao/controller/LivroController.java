@@ -3,6 +3,7 @@ package com.macedo.livrorecomendacao.controller;
 import com.macedo.livrorecomendacao.dtos.livrodto.CadastrarLivroDTO;
 import com.macedo.livrorecomendacao.dtos.livrodto.LivroDTO;
 import com.macedo.livrorecomendacao.service.LivroService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -21,7 +22,7 @@ public class LivroController {
     }
 
     @PostMapping
-    public void cadastrarLivro(@RequestBody CadastrarLivroDTO cadastrarLivroDTO){
+    public void cadastrarLivro(@RequestBody @Valid CadastrarLivroDTO cadastrarLivroDTO){
         livroService.CadastrarLivro(cadastrarLivroDTO);
     }
     @GetMapping

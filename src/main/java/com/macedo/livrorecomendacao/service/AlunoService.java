@@ -1,14 +1,16 @@
 package com.macedo.livrorecomendacao.service;
 
-import com.macedo.livrorecomendacao.dtos.alunodto.AlunoDTO;
+import com.macedo.livrorecomendacao.dtos.alunodto.AlunoAtualizacaoDTO;
+import com.macedo.livrorecomendacao.dtos.alunodto.AlunoListagemDTO;
 import com.macedo.livrorecomendacao.dtos.alunodto.CadastroAlunoDTO;
-import com.macedo.livrorecomendacao.dtos.alunodto.DadosAlunoDTO;
+import com.macedo.livrorecomendacao.dtos.alunodto.DadosAlunoIndividualDTO;
 import com.macedo.livrorecomendacao.dtos.avaliacaodto.AvaliacaoDadosDTO;
 import com.macedo.livrorecomendacao.entity.Aluno;
 import com.macedo.livrorecomendacao.exception.AlunoNaoEncontradoException;
 import com.macedo.livrorecomendacao.repository.AlunoRepository;
 import com.macedo.livrorecomendacao.repository.AvaliacaoRepository;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -47,8 +49,12 @@ public class AlunoService {
 
         alunoRepository.save(aluno);
     }
+    @Transactional
+    public void atualizarAluno(@Valid AlunoAtualizacaoDTO alunoAtualizacaoDTO){
+		alunoRepository.findByMatricula(alunoAtualizacaoDTO.matricula());
+    }
 
-    public DadosAlunoDTO listarDadosAluno(String matricula) {
+    public DadosAlunoIndividualDTO listarDadosAluno(String matricula) {
 
         try {
             Aluno aluno = alunoRepository.findByMatricula(matricula);
@@ -58,16 +64,16 @@ public class AlunoService {
             }
             List<AvaliacaoDadosDTO> avaliacaoDadosDTOS = aluno.getAvaliacaoLista().stream().map(avaliacao -> new AvaliacaoDadosDTO(
                     avaliacao.getLivro().getTitulo(), avaliacao.getLivro().getIsbn(), avaliacao.getNota())).collect(Collectors.toList());
-            return new DadosAlunoDTO(aluno.getNome(), aluno.getEmail(),
+            return new DadosAlunoIndividualDTO(aluno.getNome(), aluno.getEmail(),
                     aluno.getTurma(), aluno.getTurno(), avaliacaoDadosDTOS);
         } catch (Exception ex) {
             throw new RuntimeException("Erro ao buscar dados do aluno " + ex.getMessage());
         }
     }
 
-    public Page<AlunoDTO> listarAlunos(Pageable pageable) {
+    public Page<AlunoListagemDTO> listarAlunos(Pageable pageable) {
         Page<Aluno> alunos = alunoRepository.findAll(pageable);
-        return alunos.map(aluno -> new AlunoDTO(aluno.getMatricula(), aluno.getNome(), aluno.getTurma(),
+        return alunos.map(aluno -> new AlunoListagemDTO(aluno.getMatricula(), aluno.getNome(), aluno.getTurma(),
                 aluno.getTurno(), aluno.getEmail(), aluno.getTelefone()));
     }
 

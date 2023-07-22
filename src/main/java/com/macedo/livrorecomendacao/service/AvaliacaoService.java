@@ -13,6 +13,7 @@ import com.macedo.livrorecomendacao.repository.AlunoRepository;
 import com.macedo.livrorecomendacao.repository.AvaliacaoRepository;
 import com.macedo.livrorecomendacao.repository.LivroRespository;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class AvaliacaoService {
     }
 
     @Transactional
-    public void cadastrarAvaliacao(CadastrarAvaliacaoDTO avaliacaoDTO) {
+    public void cadastrarAvaliacao(@Valid CadastrarAvaliacaoDTO avaliacaoDTO) {
 
         Aluno aluno = alunoRepository.findByMatricula(avaliacaoDTO.matricula());
         if (aluno == null) {
