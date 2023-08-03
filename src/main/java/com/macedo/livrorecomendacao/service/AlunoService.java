@@ -38,7 +38,7 @@ public class AlunoService {
     }
 
     @Transactional
-    public void cadastraAluno(CadastroAlunoDTO cadastroAlunoDTO) {
+    public Aluno cadastraAluno(CadastroAlunoDTO cadastroAlunoDTO) {
         Aluno aluno = new Aluno(
                 cadastroAlunoDTO.nome(),
                 cadastroAlunoDTO.matricula(),
@@ -48,7 +48,7 @@ public class AlunoService {
                 cadastroAlunoDTO.turno()
         );
 
-        alunoRepository.save(aluno);
+        return alunoRepository.save(aluno);
     }
 
     @Transactional
