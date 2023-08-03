@@ -29,7 +29,7 @@ public class AlunoController {
     public ResponseEntity cadastrarAluno(@RequestBody @Valid CadastroAlunoDTO dados, UriComponentsBuilder uriBuilder) {
         var aluno = alunoService.cadastraAluno(dados);
 
-        var uri = uriBuilder.path("/aluno/matricula").buildAndExpand(aluno.getMatricula()).toUri();
+        var uri = uriBuilder.path("/aluno/{matricula}").buildAndExpand(aluno.getMatricula()).toUri();
 
         return ResponseEntity.created(uri).body(new CadastroAlunoDTO(aluno));
     }
