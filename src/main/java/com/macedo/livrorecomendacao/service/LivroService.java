@@ -26,7 +26,7 @@ public class LivroService {
     }
 
     @Transactional
-    public void CadastrarLivro(@Valid CadastrarLivroDTO cadastrarLivroDTO){
+    public Livro CadastrarLivro(@Valid CadastrarLivroDTO cadastrarLivroDTO){
 
         CadastrarEditoraDTO editoraDTO = cadastrarLivroDTO.editora();
 
@@ -40,7 +40,7 @@ public class LivroService {
                 cadastrarLivroDTO.ano(),
                 editora
         );
-        livroRespository.save(livro);
+        return livroRespository.save(livro);
     }
     public Page<LivroDTO> listarLivros(Pageable pageable){
         Page<Livro> livros = livroRespository.findAll(pageable);
