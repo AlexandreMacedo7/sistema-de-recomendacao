@@ -35,7 +35,7 @@ public class AvaliacaoService {
     }
 
     @Transactional
-    public void cadastrarAvaliacao(@Valid CadastrarAvaliacaoDTO avaliacaoDTO) {
+    public Avaliacao cadastrarAvaliacao(@Valid CadastrarAvaliacaoDTO avaliacaoDTO) {
 
         Aluno aluno = alunoRepository.findByMatricula(avaliacaoDTO.matricula());
         if (aluno == null) {
@@ -48,13 +48,15 @@ public class AvaliacaoService {
         validacaoDeNota(avaliacaoDTO.nota());
         Avaliacao avaliacao = new Avaliacao(aluno, livro, avaliacaoDTO.nota());
 
-        avaliacaoRepository.save(avaliacao);
+        var avaliaco = avaliacaoRepository.save(avaliacao);
 
         livro.getAvaliacaoLista().add(avaliacao);
         aluno.getAvaliacaoLista().add(avaliacao);
 
         livroRespository.save(livro);
         alunoRepository.save(aluno);
+
+        return avaliaco;
     }
 
     public Page<AvaliacaoDadosGeralDTO> listarAvaliacoes(Pageable pageable) {
