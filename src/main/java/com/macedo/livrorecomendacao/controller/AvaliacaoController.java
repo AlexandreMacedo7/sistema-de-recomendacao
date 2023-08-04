@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping(value = "/avaliacao")
@@ -24,17 +25,22 @@ public class AvaliacaoController {
     }
 
     @PostMapping
-    public void cadastrarAvaliacao(@RequestBody @Valid CadastrarAvaliacaoDTO avaliacaoDTO){
-        avaliacaoService.cadastrarAvaliacao(avaliacaoDTO);
+    @Transactional
+    public ResponseEntity cadastrarAvaliacao(@RequestBody @Valid CadastrarAvaliacaoDTO avaliacaoDTO, UriComponentsBuilder builder) {
+        var avaliacao = avaliacaoService.cadastrarAvaliacao(avaliacaoDTO);
+        var uri = builder.path("/avaliacao").buildAndExpand(avaliacao).toUri();
+        return ResponseEntity.created(uri).body(new CadastrarAvaliacaoDTO(avaliacao));
     }
+
     @GetMapping
-    public ResponseEntity<Page<AvaliacaoDadosGeralDTO>> listarAvaliacoes(@PageableDefault(size = 10, sort = "aluno")Pageable pageable){
+    public ResponseEntity<Page<AvaliacaoDadosGeralDTO>> listarAvaliacoes(@PageableDefault(size = 10, sort = "aluno") Pageable pageable) {
         Page<AvaliacaoDadosGeralDTO> avaliacaoDadosDTOS = avaliacaoService.listarAvaliacoes(pageable);
         return ResponseEntity.ok(avaliacaoDadosDTOS);
     }
+
     @DeleteMapping
     @Transactional
-    public ResponseEntity excluirAvaliacao(@RequestBody AvaliacaoDelecaoDTO delecaoDTO){
+    public ResponseEntity excluirAvaliacao(@RequestBody AvaliacaoDelecaoDTO delecaoDTO) {
         avaliacaoService.deletarAvaliacaoPorMatriculaEIsbn(delecaoDTO);
         return ResponseEntity.noContent().build();
     }
