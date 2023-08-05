@@ -25,7 +25,6 @@ public class AlunoController {
     }
 
     @PostMapping
-    @Transactional
     public ResponseEntity cadastrarAluno(@RequestBody @Valid CadastroAlunoDTO dados, UriComponentsBuilder uriBuilder) {
         var aluno = alunoService.cadastraAluno(dados);
 
@@ -47,7 +46,6 @@ public class AlunoController {
     }
 
     @DeleteMapping
-    @Transactional
     public ResponseEntity excluirAlunoPorMatricula(@RequestBody PesquisaMatriculaDTO matriculaDTO) {
         alunoService.deletarAluno(matriculaDTO.matricula());
         return ResponseEntity.noContent().build();

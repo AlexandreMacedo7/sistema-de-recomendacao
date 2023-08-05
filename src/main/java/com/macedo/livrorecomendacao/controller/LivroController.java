@@ -24,7 +24,6 @@ public class LivroController {
     }
 
     @PostMapping
-    @Transactional
     public ResponseEntity cadastrarLivro(@RequestBody @Valid CadastrarLivroDTO cadastrarLivroDTO, UriComponentsBuilder builder){
 
         var livro = livroService.CadastrarLivro(cadastrarLivroDTO);

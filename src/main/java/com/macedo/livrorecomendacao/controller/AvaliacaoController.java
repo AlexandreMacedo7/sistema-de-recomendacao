@@ -25,7 +25,6 @@ public class AvaliacaoController {
     }
 
     @PostMapping
-    @Transactional
     public ResponseEntity cadastrarAvaliacao(@RequestBody @Valid CadastrarAvaliacaoDTO avaliacaoDTO, UriComponentsBuilder builder) {
         var avaliacao = avaliacaoService.cadastrarAvaliacao(avaliacaoDTO);
         var uri = builder.path("/avaliacao").buildAndExpand(avaliacao).toUri();
@@ -39,7 +38,6 @@ public class AvaliacaoController {
     }
 
     @DeleteMapping
-    @Transactional
     public ResponseEntity excluirAvaliacao(@RequestBody AvaliacaoDelecaoDTO delecaoDTO) {
         avaliacaoService.deletarAvaliacaoPorMatriculaEIsbn(delecaoDTO);
         return ResponseEntity.noContent().build();
